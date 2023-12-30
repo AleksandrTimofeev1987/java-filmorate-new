@@ -1,15 +1,15 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
+@Slf4j
 public class InMemoryFilmStorage  implements FilmStorage {
 
     private Integer globalId = 1;
@@ -42,9 +42,41 @@ public class InMemoryFilmStorage  implements FilmStorage {
     }
 
     @Override
+    public Film likeFilm(Integer id, Integer userId) {
+        Film film = films.get(id);
+
+        film.getLikes().add(userId);
+        film.setRate(film.getRate() + 1);
+
+        return films.get(id);
+    }
+
+    @Override
+    public Film dislikeFilm(Integer id, Integer userId) {
+        Film film = films.get(id);
+
+        film.getLikes().remove(userId);
+        film.setRate(film.getRate() - 1);
+
+        return films.get(id);
+    }
+
+    @Override
+    public List<Film> getPopular(Integer count) {
+        return films.values()
+                .stream()
+                .sorted(Comparator.comparing(Film::getRate).reversed())
+
+                .limit(count)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void checkFilmExist(Integer id) {
         if (findById(id) == null) {
-            throw new NotFoundException(String.format("Film with id = %d is not found.", id));
+            final String message = String.format("Film with id = %d is not found.", id);
+            log.warn(message);
+            throw new NotFoundException(message);
         }
     }
 }

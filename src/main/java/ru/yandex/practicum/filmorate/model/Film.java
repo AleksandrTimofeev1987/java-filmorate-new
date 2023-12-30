@@ -8,8 +8,10 @@ import lombok.ToString;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @Data
 @Valid
@@ -34,6 +36,12 @@ public class Film extends StorageData {
 
     @NotNull(message = "{rate.film.not_null}")
     private Integer rate = 0;
+
+    @NotNull
+    private final Set<Genre> genres = new TreeSet<>(Comparator.comparingInt(Genre::getId));
+
+    @NotNull
+    private MPA mpa;
 
     private final Set<Integer> likes = new HashSet<>();
 

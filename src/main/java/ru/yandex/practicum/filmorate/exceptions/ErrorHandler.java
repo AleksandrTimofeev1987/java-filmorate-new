@@ -31,6 +31,13 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> handleForbiddenException(final ForbiddenException e) {
+        log.warn(e.getMessage());
+        return buildResponseEntity(new ApiError(HttpStatus.BAD_REQUEST, "User requested forbidden action.", e.getMessage(), LocalDateTime.now()));
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<Object> handleNotFound(final NotFoundException e) {
         log.warn(e.getMessage());
