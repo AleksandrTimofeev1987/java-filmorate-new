@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -11,12 +11,16 @@ import ru.yandex.practicum.filmorate.storage.UserStorage;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class LikesServiceImpl implements LikesService{
 
     private final UserStorage userStorage;
     private final FilmStorage filmStorage;
+
+    public LikesServiceImpl(@Qualifier("UserDbStorage") UserStorage userStorage, @Qualifier("FilmDbStorage") FilmStorage filmStorage) {
+        this.userStorage = userStorage;
+        this.filmStorage = filmStorage;
+    }
 
     @Override
     public Film likeFilm(Integer id, Integer userId) {

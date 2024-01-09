@@ -11,7 +11,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Data
@@ -34,7 +36,7 @@ public class User extends StorageData {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
-    private final Set<Integer> friends = new HashSet<>();
+    private Set<Integer> friends = new HashSet<>();
 
     public User(Integer id, String email, String login, String name, LocalDate birthday) {
         super(id);
@@ -42,5 +44,18 @@ public class User extends StorageData {
         this.login = login;
         this.name = name;
         this.birthday = birthday;
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> values = new HashMap<>();
+        values.put("email", email);
+        values.put("login", login);
+        values.put("user_name", name);
+        values.put("birthday", birthday);
+        return values;
+    }
+
+    public void setFriends(Set<Integer> friendsFromStorage) {
+        friends.addAll(friendsFromStorage);
     }
 }

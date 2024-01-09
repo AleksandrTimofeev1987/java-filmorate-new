@@ -37,11 +37,11 @@ public class Film extends StorageData {
     @NotNull(message = "{rate.film.not_null}")
     private Integer rate = 0;
 
-    @NotNull
-    private final Set<Genre> genres = new TreeSet<>(Comparator.comparingInt(Genre::getId));
+    @NotNull(message = "{mpa.film.not_null}")
+    private MPA mpa;
 
     @NotNull
-    private MPA mpa;
+    private final Set<Genre> genres = new TreeSet<>(Comparator.comparingInt(Genre::getId));
 
     private final Set<Integer> likes = new HashSet<>();
 

@@ -47,9 +47,8 @@ public class FriendControllerTest {
                 .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[1].id").value(2))
                 .andExpect(jsonPath("$[0].friends.length()").value(1))
-                .andExpect(jsonPath("$[1].friends.length()").value(1))
-                .andExpect(jsonPath("$[0].friends[0]").value(2))
-                .andExpect(jsonPath("$[1].friends[0]").value(1));
+                .andExpect(jsonPath("$[1].friends.length()").value(0))
+                .andExpect(jsonPath("$[0].friends[0]").value(2));
     }
 
     // Проверка удаления из друзей
